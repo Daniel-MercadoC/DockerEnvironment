@@ -1,0 +1,28 @@
+name: cv
+services:
+  cv:
+    build:
+      context: ../..
+      dockerfile: docker/cv/Dockerfile
+    volumes:
+      - ../..:/workspace/source
+      - ~/workspace:/workspace/code
+      - /tmp/.X11-unix/:/tmp/.X11-unix
+    devices:
+      - /dev/video0:dev/video0
+    environment:
+      - DISPLAY=$DISPLAY
+    ports:
+      - 5000:5000
+      - 8888:8888
+    tty: true
+    stdin_open: true
+    image: python/cv:1.1
+    depends_on:
+      - base
+
+  base:
+    build:
+      context: ../..
+      dockerfile: docker/base/Dockerfile
+    image: python/base:3.11
